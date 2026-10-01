@@ -39,7 +39,7 @@ Relevant files:
 
 The database was presented to stakeholders. The presentation included example query results, limitations, assumptions and possible future improvements.
 
-[Week 4 – Stakeholder Presentation](week4_stakeholder_presentation.mov)
+[Week 4 – Stakeholder Presentation](Screen Recording 2026-09-26 at 11.06.42)
 
 # Week 5 – Real-World Data Integration & Testing
 
