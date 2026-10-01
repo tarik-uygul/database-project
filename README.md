@@ -1,3 +1,5 @@
+https://github.com/user-attachments/assets/836cdfc8-8203-4b86-b77f-c3c612ad6025
+
 # Database Project – Dutch Housing Affordability
 
 ## Project Overview
@@ -39,8 +41,7 @@ Relevant files:
 
 The database was presented to stakeholders. The presentation included example query results, limitations, assumptions and possible future improvements.
 
-[[Week 4 – Stakeholder Presentation](week4_stakeholder_presentation.mov)
-](https://github.com/user-attachments/assets/836cdfc8-8203-4b86-b77f-c3c612ad6025)
+
 # Week 5 – Real-World Data Integration & Testing
 
 ### 1. Dataset Sources
