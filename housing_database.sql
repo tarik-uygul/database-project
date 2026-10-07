@@ -1,3 +1,7 @@
+-- If the database doesn't exist, create it beforehand
+CREATE DATABASE IF NOT EXISTS housing_database;
+USE housing_database;
+
 -- Create the Province table
 CREATE TABLE Province (
     province_id INT PRIMARY KEY,
