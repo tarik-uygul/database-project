@@ -240,3 +240,44 @@ FROM Housing_Statistic
 WHERE average_sale_price IS NOT NULL
 GROUP BY year
 ORDER BY year;
+
+-- Author: @Yliveta932
+-- Query: Most affordable municipalities in 2025
+-- Question: Which 10 municipalities had the lowest average house sale prices in 2025?
+-- Relevance: Shows where buying a house may be more affordable, especially for young adults and first-time buyers.
+
+SELECT
+    m.municipality_name,
+    ROUND(AVG(hs.average_sale_price), 2) AS average_sale_price
+FROM Municipality m
+JOIN Housing_Statistic hs
+    ON m.municipality_id = hs.municipality_id
+WHERE hs.year = 2025
+    AND hs.average_sale_price IS NOT NULL
+GROUP BY m.municipality_id, m.municipality_name
+ORDER BY average_sale_price ASC
+LIMIT 10;
+
+-- Author: @liveta932
+-- Query: House prices compared to household income
+-- Question: Which municipalities have the lowest house price relative to household income in 2023?
+-- Relevance: Helps identify areas where purchasing a house might be more realistic for households with local incomes.
+
+SELECT
+    m.municipality_name,
+    ROUND(AVG(hs.average_sale_price), 2) AS average_sale_price,
+    ROUND(AVG(a.average_income), 2) AS average_income,
+    ROUND(AVG(hs.average_sale_price) / AVG(a.average_income), 2)
+        AS price_to_income_ratio
+FROM Municipality m
+JOIN Housing_Statistic hs
+    ON m.municipality_id = hs.municipality_id
+JOIN Affordability_Statistic a
+    ON m.municipality_id = a.municipality_id
+WHERE hs.year = 2023
+    AND a.year = 2023
+    AND hs.average_sale_price > 0
+    AND a.average_income > 0
+GROUP BY m.municipality_id, m.municipality_name
+ORDER BY price_to_income_ratio ASC
+LIMIT 10;
