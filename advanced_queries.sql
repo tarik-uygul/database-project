@@ -1,7 +1,12 @@
 USE housing_database;
 
 
--- Show the average sale price per municipality in 2025
+-- Author: @gabrielaroscha
+-- Query: Average sale price per municipality in 2025
+-- Question: What is the average house sale price in each municipality in 2025?
+-- Result: Municipalities ranked from highest to lowest average sale price.
+-- Relevance: Identifies differences in housing prices between municipalities,
+-- showing where purchasing a home is more expensive and potentially less affordable.
 
 SELECT
     m.municipality_name,
@@ -17,8 +22,13 @@ GROUP BY m.municipality_id, m.municipality_name
 ORDER BY average_sale_price DESC;
 
 
--- Find municipalities whose average sale price in 2025
--- is higher than the overall average sale price in 2025
+-- Author: @gabrielaroscha
+-- Query: Municipalities with above-average house prices in 2025
+-- Question: Which municipalities have average house sale prices higher
+-- than the overall average recorded in the database in 2025?
+-- Result: Municipalities with above-average sale prices, ranked by price.
+-- Relevance: Highlights municipalities where housing prices are particularly
+-- high compared with the other areas represented in the dataset.
 
 SELECT
     m.municipality_name,
@@ -37,8 +47,13 @@ ORDER BY municipality_average_price DESC;
 
 
 
--- Find municipalities where the average sale price of existing homes
--- in 2025 is greater than 400,000 euros
+-- Author: @gabrielaroscha
+-- Query: Municipalities with average house prices above 400,000 euros
+-- Question: Which municipalities have an average sale price for existing
+-- owner-occupied homes above 400,000 euros in 2025?
+-- Result: Municipalities exceeding the 400,000-euro threshold.
+-- Relevance: Identifies areas with relatively expensive housing,
+-- helping illustrate affordability challenges for potential homebuyers
 
 SELECT
     m.municipality_name,
@@ -56,8 +71,13 @@ ORDER BY average_municipality_price DESC;
 
 
 
--- Find municipalities that have at least one housing statistic record for existing homes that
--- record above 500,000 euros in 2025
+-- Author: @gabrielaroscha
+-- Query: Municipalities with house prices above 500,000 euros
+-- Question: Which municipalities have at least one housing statistic
+-- record with an average sale price above 500,000 euros in 2025?
+-- Result: Municipalities meeting the 500,000-euro price condition.
+-- Relevance: Highlights expensive housing markets where high purchase
+-- prices may create barriers for first-time buyers.
 
 SELECT
     m.municipality_name
@@ -179,3 +199,44 @@ WHERE ast.year = 2023
   AND ast.average_income > (SELECT AVG(average_income) FROM Affordability_Statistic WHERE year = 2023)
   AND hs.average_sale_price < (SELECT AVG(average_sale_price) FROM Housing_Statistic WHERE year = 2023)
 ORDER BY hs.average_sale_price ASC;
+
+
+
+-- Author: @gabrielaroscha
+-- Query: Municipalities with decreasing house prices
+-- Question: Which municipalities experienced a decrease in average
+-- house sale prices between 2024 and 2025?
+-- Relevance: Identifies areas where housing prices became lower,
+-- providing insight into differences in housing market trends.
+
+SELECT
+    m.municipality_name,
+    h2024.average_sale_price AS price_2024,
+    h2025.average_sale_price AS price_2025
+FROM Municipality m
+JOIN Housing_Statistic h2024
+    ON m.municipality_id = h2024.municipality_id
+JOIN Housing_Statistic h2025
+    ON m.municipality_id = h2025.municipality_id
+    AND h2024.housing_type_id = h2025.housing_type_id
+WHERE h2024.year = 2024
+    AND h2025.year = 2025
+    AND h2025.average_sale_price < h2024.average_sale_price
+ORDER BY m.municipality_name;
+
+
+
+-- Author: @gabrielaroscha
+-- Query: Average house sale price by year
+-- This query calculates the average house sale price
+-- for each year available in the database.
+-- Relevance: Helps identify long-term housing price trends
+-- and understand how rising prices contribute to the housing crisis.
+
+SELECT
+    year,
+    ROUND(AVG(average_sale_price), 2) AS average_house_price
+FROM Housing_Statistic
+WHERE average_sale_price IS NOT NULL
+GROUP BY year
+ORDER BY year;
