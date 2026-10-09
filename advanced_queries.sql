@@ -132,3 +132,50 @@ WHERE hs_2024.year = 2024
   AND hs_2025.year = 2025
   AND hs_2024.average_sale_price > 0
 ORDER BY growth_percentage DESC;
+
+-- Author: @tarik-uygul
+-- Query: The Affordability Gap (Price-to-Income Ratio) in 2023
+-- This query identifies municipalities where the disparity between house prices
+--          and average local incomes is the most extreme.
+-- Result:  The 10 municipalities with the highest price-to-income ratios.
+-- This result is highly relevant to our societal problem as it pinpoints the
+--          exact regions where first-time buyers are most severely priced out.
+
+SELECT 
+    m.municipality_name,
+    hs.average_sale_price,
+    ast.average_income,
+    ROUND(hs.average_sale_price / ast.average_income, 2) AS price_to_income_ratio
+FROM Municipality m
+JOIN Housing_Statistic hs 
+    ON m.municipality_id = hs.municipality_id
+JOIN Affordability_Statistic ast 
+    ON m.municipality_id = ast.municipality_id
+WHERE hs.year = 2023 
+  AND ast.year = 2023
+ORDER BY price_to_income_ratio DESC
+LIMIT 10;
+
+
+-- Author: @tarik-uygul
+-- Query: Accessible Housing Markets (High Income, Low Price) in 2023
+-- This query finds regions where the local average income is above the national
+--          average, but average house prices remain below the national average.
+-- Result:  A list of municipalities offering the best purchasing power.
+-- This result provides an actionable solution to the housing crisis by highlighting
+--          economically viable regions for families and young professionals to relocate.
+
+SELECT 
+    m.municipality_name,
+    ast.average_income,
+    hs.average_sale_price
+FROM Municipality m
+JOIN Affordability_Statistic ast 
+    ON m.municipality_id = ast.municipality_id
+JOIN Housing_Statistic hs 
+    ON m.municipality_id = hs.municipality_id
+WHERE ast.year = 2023 
+  AND hs.year = 2023
+  AND ast.average_income > (SELECT AVG(average_income) FROM Affordability_Statistic WHERE year = 2023)
+  AND hs.average_sale_price < (SELECT AVG(average_sale_price) FROM Housing_Statistic WHERE year = 2023)
+ORDER BY hs.average_sale_price ASC;
