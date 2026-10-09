@@ -1,5 +1,6 @@
 https://github.com/user-attachments/assets/836cdfc8-8203-4b86-b77f-c3c612ad6025
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23260505.svg)](https://doi.org/10.5281/zenodo.23260505)
 # Database Project – Dutch Housing Affordability
 
 ## Project Overview
